@@ -1,0 +1,33 @@
+name: Send Daily Note
+
+on:
+  schedule:
+    # Запуск каждый день в 01:00 UTC (09:00 IRK)
+    - cron: '0 1 * * *'
+  # Кнопка для ручного теста в интерфейсе GitHub
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          # Пробрасываем секреты из настроек в переменные окружения для Python
+          NOTES_FILE_URL: ${{ secrets.NOTES_FILE_URL }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          MAX_MSG_SIZE: 4096
+        run: python script.py
