@@ -3,7 +3,7 @@ name: Send Daily Note
 on:
   schedule:
     # Запуск каждый день в 01:00 UTC (09:00 IRK)
-    - cron: '0 1 * * *'
+    - cron: '23 * * * *'
   # Кнопка для ручного теста в интерфейсе GitHub
   workflow_dispatch:
 
